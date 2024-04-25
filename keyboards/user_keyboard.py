@@ -19,8 +19,9 @@ def main_menu():
 
 
 def keyboards_manager_link():
-    button_1 = InlineKeyboardButton(text="Менеджер🦾", url="t.me/dertionv1")
-    keyboard = InlineKeyboardMarkup(inline_keyboard=[[button_1],], )
+    button_1 = InlineKeyboardButton(text="Менеджер🦾", url="t.me/Sweeteeboy")
+    button_2 = InlineKeyboardButton(text='Назад', callback_data='main_menu')
+    keyboard = InlineKeyboardMarkup(inline_keyboard=[[button_1], [button_2]], )
     return keyboard
 
 
@@ -32,10 +33,18 @@ def keyboards_get_phone():
 
 def keyboards_chanel_link():
     button_1 = InlineKeyboardButton(text='Подписаться', url='t.me/thecococoal')
-    keyboard = InlineKeyboardMarkup(inline_keyboard=[[button_1],], )
+    keyboard = InlineKeyboardMarkup(inline_keyboard=[[button_1], ], )
     return keyboard
 
-def keyboards_back_main_menu():
-    button_1 = InlineKeyboardButton(text='Назад', callback_data='main_menu')
-    keyboard = InlineKeyboardMarkup(inline_keyboard=[[button_1],], )
+
+def keyboards_back_main_menu(text: str = 'Назад'):
+    button_1 = InlineKeyboardButton(text=text, callback_data='main_menu')
+    keyboard = InlineKeyboardMarkup(inline_keyboard=[[button_1], ], )
+    return keyboard
+
+
+def keyboards_confirm_register():
+    button_1 = InlineKeyboardButton(text='Подтвердить', callback_data='confirm_register')
+    button_2 = InlineKeyboardButton(text='Назад', callback_data='main_menu')
+    keyboard = InlineKeyboardMarkup(inline_keyboard=[[button_1], [button_2], ], )
     return keyboard
