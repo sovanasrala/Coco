@@ -1,5 +1,5 @@
 from aiogram import Router, F, Bot
-from aiogram.filters import CommandStart, StateFilter
+from aiogram.filters import CommandStart
 from aiogram.types import Message, CallbackQuery
 from aiogram.fsm.context import FSMContext
 from aiogram.fsm.state import State, StatesGroup, default_state
@@ -57,6 +57,29 @@ async def process_start_command_user(message: Message) -> None:
         text=f"🙍<b>{message.from_user.first_name}</b> Добро пожаловать! Я помогу вам, с чего начнем?🏮",
         reply_markup=main_menu(),
         parse_mode='html')
+
+
+@router.message(F.text == "Техподдержка ☎️")
+async def links(message: Message):
+    await message.answer(text="✊🏻Вот c нашим менеджером:",
+                         reply_markup=keyboards_manager_link())
+
+
+@router.message(F.text == "Наш канал 🧧")
+async def links_channel(message: Message):
+    logging.info("links_channel")
+    await message.answer(f"Подпишись на наш телеграм канал:", reply_markup=keyboards_chanel_link())
+
+
+@router.message(F.text == "О нас❓")
+async def links_about(message: Message):
+    logging.info("links_about")
+    await message.answer(text=f"Coco-coal:\n"
+                              f"👉🏻Это не просто уголь, а качественный продукт наравне с такими известными брендами, как Краун и Коколоко. \n"
+                              f"👉🏻Мы долго работали проектом, стремясь создать что-то по-настоящему уникальное.\n"
+                              f"👉🏻Уголь наивысшей категории, собранный на острове в Тихом океане. Сделан из натуральных продуктов, а именно, из лучших сортов кокосовой скорлупы.\n"
+                              f"👉🏻Идеальная увеличенная форма куба позволяет обеспечить долгое горение, а состав органически выверен, что позволяет насладиться кальяном и его вкусом без лишних примесей и запахов.\n",
+                         reply_markup=keyboards_back_main_menu())
 
 
 @router.message(F.text == "Заказать уголь 💷")
@@ -117,7 +140,7 @@ async def register_name_error(message: Message):
 
 
 @router.message(Register.address, lambda message: len(message.text) < 4096)
-async def register_address(message: Message, state: FSMContext, bot: Bot):
+async def register_address(message: Message, state: FSMContext):
     logging.info(f'register_address: {message.chat.id}')
     await state.update_data(address=message.text)
     user_dict[message.chat.id] = await state.get_data()
@@ -148,29 +171,6 @@ async def links_about(callback: CallbackQuery, bot: Bot, state: FSMContext):
 async def register_address_error(message: Message):
     logging.info(f'register_address_error: {message.chat.id}')
     await message.answer(text="💬Кажется вы отправили более 4096 символов. Пожалуйста повторите ввод имени")
-
-
-@router.message(F.text == "Техподдержка ☎️")
-async def links(message: Message):
-    await message.answer(text="✊🏻Вот c нашим менеджером:",
-                         reply_markup=keyboards_manager_link())
-
-
-@router.message(F.text == "Наш канал 🧧")
-async def links_channel(message: Message):
-    logging.info("links_channel")
-    await message.answer(f"Подпишись на наш телеграм канал:", reply_markup=keyboards_chanel_link())
-
-
-@router.message(F.text == "О нас❓")
-async def links_about(message: Message):
-    logging.info("links_about")
-    await message.answer(text=f"Coco-coal:\n"
-                              f"👉🏻Это не просто уголь, а качественный продукт наравне с такими известными брендами, как Краун и Коколоко. \n"
-                              f"👉🏻Мы долго работали проектом, стремясь создать что-то по-настоящему уникальное.\n"
-                              f"👉🏻Уголь наивысшей категории, собранный на острове в Тихом океане. Сделан из натуральных продуктов, а именно, из лучших сортов кокосовой скорлупы.\n"
-                              f"👉🏻Идеальная увеличенная форма куба позволяет обеспечить долгое горение, а состав органически выверен, что позволяет насладиться кальяном и его вкусом без лишних примесей и запахов.\n",
-                         reply_markup=keyboards_back_main_menu())
 
 
 @router.callback_query(F.data == "main_menu")
